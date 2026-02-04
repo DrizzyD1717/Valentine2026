@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+body {
+  background: radial-gradient(circle at center, #fff1f2 0%, #ffe4e6 100%);
+  min-height: 100vh;
+  overflow-x: hidden;
+  color: #4c0519;
+}
+
+@theme {
+  --color-valentine-50: #fff1f2;
+  --color-valentine-100: #ffe4e6;
+  --color-valentine-200: #fecdd3;
+  --color-valentine-300: #fda4af;
+  --color-valentine-400: #fb7185;
+  --color-valentine-500: #f43f5e; /* Main Red/Pink */
+  --color-valentine-600: #e11d48;
+  --color-valentine-900: #4c0519; /* Deep Wine */
+}
+
+/* Custom scrollbar for a cleaner look */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #fda4af;
+  border-radius: 10px;
+}
