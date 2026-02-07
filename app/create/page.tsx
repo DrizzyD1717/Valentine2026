@@ -271,11 +271,29 @@ import {
   Check,
   Share2,
 } from "lucide-react";
-import { CldUploadWidget } from "next-cloudinary"; // Ensure this is installed
+import { CldUploadWidget } from "next-cloudinary";
+
+// 1. Define a strict Interface so TypeScript knows exactly what a Moment looks like
+interface Moment {
+  id: number;
+  type: "text" | "image" | "quote";
+  content?: string;
+  subtext?: string;
+  url?: string;
+  caption?: string;
+}
 
 export default function CreatePage() {
-  const [moments, setMoments] = useState([
-    { id: Date.now(), type: "text", content: "", subtext: "" },
+  // 2. Initialize with ALL properties to keep the structure consistent
+  const [moments, setMoments] = useState<Moment[]>([
+    {
+      id: Date.now(),
+      type: "text",
+      content: "",
+      subtext: "",
+      url: "",
+      caption: "",
+    },
   ]);
 
   const [showModal, setShowModal] = useState(false);
@@ -283,12 +301,12 @@ export default function CreatePage() {
   const [copied, setCopied] = useState(false);
 
   const addMoment = (type: "text" | "image" | "quote") => {
-    const newMoment = {
+    const newMoment: Moment = {
       id: Date.now(),
       type,
       content: "",
       subtext: "",
-      url: "", // This is where Cloudinary will save the link
+      url: "",
       caption: "",
     };
     setMoments([...moments, newMoment]);
@@ -298,7 +316,7 @@ export default function CreatePage() {
     setMoments(moments.filter((m) => m.id !== id));
   };
 
-  const updateMoment = (id: number, fields: any) => {
+  const updateMoment = (id: number, fields: Partial<Moment>) => {
     setMoments(moments.map((m) => (m.id === id ? { ...m, ...fields } : m)));
   };
 
@@ -353,7 +371,6 @@ export default function CreatePage() {
                   <div className="h-[1px] flex-1 bg-valentine-100" />
                 </div>
 
-                {/* TEXT TYPE */}
                 {moment.type === "text" && (
                   <div className="space-y-4">
                     <input
@@ -373,11 +390,10 @@ export default function CreatePage() {
                   </div>
                 )}
 
-                {/* IMAGE TYPE (CLOUDINARY INTEGRATION) */}
                 {moment.type === "image" && (
                   <div className="space-y-4">
                     <CldUploadWidget
-                      uploadPreset="loveisintheair" // <--- CHANGE THIS
+                      uploadPreset="loveisintheair"
                       onSuccess={(result: any) => {
                         updateMoment(moment.id, {
                           url: result.info.secure_url,
@@ -414,7 +430,7 @@ export default function CreatePage() {
                     </CldUploadWidget>
                     <input
                       placeholder="Caption..."
-                      className="w-full text-sm outline-none text-valentine-500"
+                      className="w-full text-sm outline-none text-valentine-500 border-b border-valentine-100"
                       onChange={(e) =>
                         updateMoment(moment.id, { caption: e.target.value })
                       }
@@ -422,7 +438,6 @@ export default function CreatePage() {
                   </div>
                 )}
 
-                {/* QUOTE TYPE */}
                 {moment.type === "quote" && (
                   <textarea
                     placeholder="Your special quote..."
@@ -437,7 +452,6 @@ export default function CreatePage() {
           </AnimatePresence>
         </div>
 
-        {/* CONTROLS */}
         <div className="flex justify-center gap-4 mt-8">
           <button
             onClick={() => addMoment("text")}
@@ -469,7 +483,7 @@ export default function CreatePage() {
         </div>
       </div>
 
-      {/* SHARE MODAL (Rest of your code remains the same) */}
+      {/* SHARE MODAL */}
       <AnimatePresence>
         {showModal && (
           <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">

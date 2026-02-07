@@ -1,6 +1,5 @@
 "use client";
 import { motion } from "framer-motion";
-import Image from "next/image";
 // You can replace cloudinary and use the default Image
 import { CldImage } from "next-cloudinary";
 
