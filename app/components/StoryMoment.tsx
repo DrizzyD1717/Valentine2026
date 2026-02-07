@@ -1,6 +1,8 @@
 "use client";
 import { motion } from "framer-motion";
 import Image from "next/image";
+// You can replace cloudinary and use the default Image
+import { CldImage } from "next-cloudinary";
 
 interface MomentProps {
   moment: any;
@@ -40,13 +42,25 @@ export default function StoryMoment({ moment, index }: MomentProps) {
 
             {/* Image Container with defined constraints for 'fill' */}
             <div className="relative h-[400px] w-full max-w-sm overflow-hidden rounded-xl shadow-2xl border-8 border-white transform rotate-2 group-hover:rotate-0 transition duration-500">
-              <Image
+              {/* <Image
                 src={moment.url}
                 alt={moment.caption || "Memory"}
                 fill
                 sizes="(max-width: 768px) 100vw, 500px"
                 className="object-cover"
-              />
+              /> */}
+              {/* I just added the below for cloudinary */}
+              <div className="relative h-[450px] w-full max-w-sm overflow-hidden rounded-xl shadow-2xl border-8 border-white transform rotate-2 group-hover:rotate-0 transition duration-500">
+                <CldImage
+                  width="400"
+                  height="550"
+                  src={moment.url} // The secure_url from Step 3
+                  alt={moment.caption || "Our Memory"}
+                  crop="fit"
+                  gravity="auto" // Automatically finds faces/important parts to keep in frame
+                  className="object-cover object-center"
+                />
+              </div>
             </div>
 
             <p className="mt-4 font-handwriting text-2xl text-valentine-600">
